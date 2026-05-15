@@ -215,4 +215,4 @@ Keiner Fontalvo
 Joseph De la Rans
 Nelson Sierra
 Oscar Llanos
-Desarrollado como proyecto de experimentación en visión por computadora e inteligencia artificial.
+
