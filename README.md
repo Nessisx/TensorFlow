@@ -24,10 +24,9 @@ PoseAI/
 ├── index.html          # Interfaz principal
 ├── script.js           # Lógica de detección y predicción
 ├── styles.css          # Estilos de la aplicación
-│
-└── my_model/           # Modelo exportado desde Teachable Machine (opcional)
-    ├── model.json
-    └── metadata.json
+├── model.json
+├── weight.bin
+└── metadata.json
 ```
 
 ---
