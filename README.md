@@ -1,57 +1,218 @@
-# TensorFlow
+# PoseAI — Analizador de Poses y Gestos
 
-Este proyecto consiste en el desarrollo de una aplicación capaz de reconocer los gestos del juego piedra, papel o tijera mediante inteligencia artificial y visión por computadora.
+Aplicación web para detección de poses y reconocimiento de gestos utilizando **MediaPipe Hands** y modelos personalizados exportados desde **Teachable Machine**.
 
-El sistema permite al usuario subir una imagen o utilizar la cámara web para capturar una foto en tiempo real. A partir de ello, el modelo analiza la posición de la mano y determina si el gesto corresponde a piedra, papel o tijera, basándose en el entrenamiento previamente realizado.
+---
 
-## Descripción del proyecto
+## 🚀 Características
 
-La aplicación fue desarrollada con el objetivo de aplicar conceptos de inteligencia artificial, procesamiento de imágenes y reconocimiento de patrones utilizando tecnologías web.
+- 📷 Subida de imágenes desde el dispositivo
+- 📸 Captura de fotos desde cámara
+- ✋ Detección de manos con MediaPipe
+- 🪨📄✂️ Clasificación de gestos (*Piedra / Papel / Tijera*)
+- 🧠 Integración con modelos de Teachable Machine
+- 📊 Visualización de probabilidades por clase
+- ⚡ Procesamiento completamente en el navegador
 
-Para el reconocimiento de las manos se implementó MediaPipe Hands, herramienta que permite detectar puntos clave de la mano para posteriormente interpretar el gesto realizado por el usuario.
+---
 
-## Funcionalidades
+## 📁 Estructura del proyecto
 
-- Carga de imágenes desde el dispositivo.
-- Captura de imágenes mediante cámara web.
-- Detección de mano en tiempo real.
-- Clasificación automática de gestos.
-- Interfaz interactiva y fácil de usar.
-- Procesamiento rápido de imágenes.
+```bash
+PoseAI/
+│
+├── index.html          # Interfaz principal
+├── script.js           # Lógica de detección y predicción
+├── styles.css          # Estilos de la aplicación
+│
+└── my_model/           # Modelo exportado desde Teachable Machine (opcional)
+    ├── model.json
+    └── metadata.json
+```
 
-## Tecnologías utilizadas
+---
 
-- HTML
-- CSS
-- JavaScript
-- MediaPipe Hands
-- Vision Tasks
+## ✅ Requisitos
 
-## Funcionamiento
+Antes de ejecutar el proyecto asegúrate de tener:
 
-1. El usuario selecciona una imagen o activa la cámara.
-2. El sistema detecta la mano dentro de la imagen.
-3. Se analizan los puntos clave de la mano.
-4. El modelo compara la información con los datos obtenidos durante el entrenamiento.
-5. Finalmente se muestra el resultado correspondiente al gesto detectado.
+- Navegador moderno:
+  - Google Chrome
+  - Microsoft Edge
+  - Firefox
+- Conexión a Internet para cargar dependencias CDN
+- Python instalado (opcional para servidor local)
 
-## Objetivo
+---
 
-El objetivo principal del proyecto es demostrar cómo un modelo entrenado puede identificar patrones visuales y clasificarlos correctamente a partir de imágenes capturadas en tiempo real o cargadas por el usuario.
+## ▶️ Cómo ejecutar el proyecto
 
-## Cómo ejecutar el proyecto
+### 1. Clonar o descargar el proyecto
 
-1. Descargar o clonar el repositorio.
-2. Abrir el archivo `index.html` en el navegador.
-3. Permitir acceso a la cámara si se desea utilizar la captura en vivo.
-4. Subir una imagen o tomar una foto para realizar la predicción.
+```bash
+git clone <repositorio>
+cd PoseAI
+```
 
-## Aprendizajes obtenidos
+### 2. Iniciar un servidor local
 
-Durante el desarrollo del proyecto se fortalecieron conocimientos relacionados con:
+Con Python:
 
-- Inteligencia artificial aplicada a imágenes.
-- Visión por computadora.
-- Procesamiento de imágenes en JavaScript.
-- Detección de landmarks de mano.
-- Integración de herramientas de reconocimiento en aplicaciones web.
+```powershell
+python -m http.server 8000
+```
+
+### 3. Abrir en el navegador
+
+```txt
+http://localhost:8000
+```
+
+---
+
+## 🧠 Flujo de uso
+
+1. Abre la aplicación en el navegador.
+2. Espera a que los modelos carguen automáticamente.
+3. Sube una imagen o toma una foto.
+4. Haz clic en **"Analizar pose"**.
+5. Observa los resultados de detección y clasificación.
+
+---
+
+## 🔍 Resultados mostrados
+
+### ✋ MediaPipe Hands
+
+La aplicación detecta:
+
+- Palma de la mano
+- Dedos y articulaciones
+- Puntos clave (*landmarks*)
+
+### 🪨📄✂️ Clasificación de gestos
+
+Reconoce:
+
+- Piedra
+- Papel
+- Tijera
+
+### 🧠 Teachable Machine
+
+Si existe la carpeta `my_model/`, también mostrará:
+
+- Clases detectadas
+- Probabilidades por clase
+- Predicción más probable
+
+---
+
+## 🛠️ Dependencias utilizadas
+
+El proyecto utiliza:
+
+- `@mediapipe/tasks-vision`
+- `TensorFlow.js`
+- `teachablemachine-pose`
+
+Cargadas mediante CDN.
+
+---
+
+## ⚠️ Solución de problemas
+
+### Los modelos no cargan
+
+Abre las herramientas de desarrollo del navegador (**F12 → Network**) y verifica que carguen correctamente:
+
+- `tf.min.js`
+- `teachablemachine-pose.min.js`
+- `@mediapipe/tasks-vision`
+
+Todos deben responder con estado `200`.
+
+---
+
+### Error al cargar archivos `.task`
+
+Si aparece un error `404` o `403`:
+
+- Tu red puede bloquear `storage.googleapis.com`
+- Descarga los assets manualmente
+- Sirve los modelos localmente
+
+---
+
+### No detecta la mano
+
+Prueba con:
+
+- Buena iluminación
+- Fondo limpio
+- Mano visible en primer plano
+- Imagen de mayor resolución
+
+---
+
+## 🧩 Personalización
+
+Puedes reemplazar la carpeta:
+
+```bash
+my_model/
+```
+
+por cualquier modelo exportado desde:
+
+- Teachable Machine Pose
+- Teachable Machine Image
+
+Siempre que incluya:
+
+```bash
+model.json
+metadata.json
+```
+
+---
+
+## 📌 Notas de desarrollo
+
+El archivo `script.js` contiene la lógica de:
+
+- Inicialización de modelos
+- Acceso a cámara
+- Procesamiento de imágenes
+- Detección con MediaPipe
+- Predicción con Teachable Machine
+- Renderizado de resultados
+
+---
+
+## 💡 Mejoras futuras
+
+- 🎥 Detección en tiempo real por webcam
+- 📱 Compatibilidad móvil mejorada
+- 🧍 Detección de pose corporal completa
+- 🤖 Más clases de gestos personalizadas
+- 📈 Historial de predicciones
+
+---
+
+## 📄 Licencia
+
+Proyecto educativo y experimental basado en:
+
+- MediaPipe
+- TensorFlow.js
+- Google Teachable Machine
+
+---
+
+## 👨‍💻 Autor
+Keiner Fontalvo
+Joseph De la Rans
+Nelson Sierra
+Oscar Llanos
+Desarrollado como proyecto de experimentación en visión por computadora e inteligencia artificial.
