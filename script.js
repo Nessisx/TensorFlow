@@ -237,40 +237,19 @@ captureBtn.addEventListener('click', () => {
 
 // Analizar gesto de mano
 analyzeBtn.addEventListener('click', async () => {
-  if (!modelsLoaded) {
-    alert('Los modelos aún no están cargados. Espera a que termine la carga.');
-    return;
-  }
-  if (!imageData) {
-    alert('Por favor, carga o toma una imagen antes de analizar.');
-    return;
-  }
+  if (!modelsLoaded || !imageData) return;
 
   resultsSection.classList.remove('hidden');
   resultLoading.classList.remove('hidden');
   resultCard.innerHTML = '';
 
-  try {
-    const img = new Image();
-    img.onload = async () => {
-      const result = handDetector ? handDetector.detect(img) : null;
-      let tmResult = null;
-      if (tmModel) {
-        try {
-          tmResult = await predictFromImageWithTM(img);
-        } catch (err) {
-          console.warn('Error predicting with Teachable Machine:', err);
-        }
-      }
-      displayResults(result, img, tmResult);
-      resultLoading.classList.add('hidden');
-    };
-    img.src = imageData;
-  } catch (err) {
-    console.error('Error al detectar la mano:', err);
-    resultCard.innerHTML = '<p style="color: red;">Error al procesar la imagen</p>';
+  const img = new Image();
+  img.onload = async () => {
+    const tmResult = await predictFromImageWithTM(img);
+    displayResults(null, img, tmResult);  // null = sin MediaPipe
     resultLoading.classList.add('hidden');
-  }
+  };
+  img.src = imageData;
 });
 
 // Mostrar resultados
