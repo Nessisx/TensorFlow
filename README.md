@@ -1,4 +1,4 @@
-# Rock Paper Scissors AI
+# TensorFlow
 
 Este proyecto consiste en el desarrollo de una aplicación capaz de reconocer los gestos del juego piedra, papel o tijera mediante inteligencia artificial y visión por computadora.
 
