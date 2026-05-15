@@ -42,9 +42,5 @@ Notas de desarrollo
 - `script.js` contiene la lógica de: carga de modelos, UI de subida, detección de MediaPipe Hands y predicción con Teachable Machine.
 - Puedes reemplazar `my_model/` por cualquier export de Teachable Machine Pose (model.json + metadata.json).
 
-Si quieres, puedo:
-- Añadir una opción para servir dependencias localmente (descargar CDNs al proyecto).
-- Mostrar barras de probabilidad visuales en lugar de sólo porcentajes.
-
 ---
 Made quick by your assistant. If you want exact local fallbacks, tell me and I will add them.
