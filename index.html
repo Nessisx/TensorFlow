@@ -100,10 +100,6 @@
             <div class="spinner"></div>
             <p>Procesando imagen…</p>
           </div>
-          <div class="result-content hidden" id="resultContent">
-            <div class="result-icon" id="resultIcon">🧍</div>
-            <div class="result-text" id="resultText"></div>
-          </div>
         </div>
 
         <div class="thumb-wrap" id="thumbWrap">
@@ -115,8 +111,7 @@
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+  <!-- Sin MediaPipe. Solo TF.js y TM Pose (cargados dinámicamente por script.js) -->
   <script src="script.js"></script>
 </body>
 </html>
