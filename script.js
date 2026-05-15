@@ -3,7 +3,7 @@ let handDetector;
 let webcamStream = null;
 let imageData = null;
 // Teachable Machine Pose model
-const TM_URL = './my_model/';
+const TM_URL = './';
 let tmModel = null;
 let tmMaxPredictions = 0;
 const tmCanvas = document.createElement('canvas');
@@ -253,7 +253,7 @@ analyzeBtn.addEventListener('click', async () => {
   try {
     const img = new Image();
     img.onload = async () => {
-      const result = handDetector ? handDetector.detectForVideo(img, performance.now()) : null;
+      const result = handDetector ? handDetector.detect(img) : null;
       let tmResult = null;
       if (tmModel) {
         try {
