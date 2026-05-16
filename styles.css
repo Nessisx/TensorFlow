@@ -66,6 +66,12 @@ body::before {
   backdrop-filter: blur(10px);
 }
 
+@media (max-width: 640px) {
+  .header {
+    padding: 1rem 1.5rem;
+  }
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -115,6 +121,13 @@ body::before {
   gap: 3rem;
 }
 
+@media (max-width: 640px) {
+  .main {
+    padding: 2rem 1rem 3rem;
+    gap: 2rem;
+  }
+}
+
 /* ===========================
    HERO
 =========================== */
@@ -125,16 +138,19 @@ body::before {
 }
 
 .hero-title {
-  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-stretch: normal;
+  font-style: normal;
 }
 
 .hero-title em {
   font-style: normal;
   color: var(--accent);
-  -webkit-text-stroke: 0px;
+  display: block;
+  font-stretch: normal;
 }
 
 .hero-sub {
@@ -168,6 +184,12 @@ body::before {
     border-color 0.2s,
     background 0.2s;
   overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .upload-zone {
+    min-height: 180px;
+  }
 }
 
 .upload-zone:hover,
@@ -256,6 +278,17 @@ body::before {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .action-buttons {
+    gap: 0.5rem;
+  }
+  
+  .btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+  }
 }
 
 .btn {
@@ -348,6 +381,13 @@ body::before {
   gap: 1rem;
   padding: 1.25rem;
   animation: fadeUp 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .modal-box {
+    max-width: 95vw;
+    padding: 1rem;
+  }
 }
 
 @keyframes fadeUp {
@@ -475,6 +515,12 @@ body::before {
   gap: 1rem;
 }
 
+@media (max-width: 900px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .results-grid {
     grid-template-columns: 1fr;
@@ -490,6 +536,13 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .result-card {
+    padding: 1.25rem;
+    min-height: 180px;
+  }
 }
 
 .result-loading {
@@ -537,6 +590,10 @@ body::before {
   border-radius: var(--radius);
   overflow: hidden;
   aspect-ratio: 4/3;
+}
+
+.thumb-wrap.hidden {
+  display: none !important;
 }
 
 .thumb-img {

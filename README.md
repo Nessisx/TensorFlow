@@ -224,23 +224,26 @@ El archivo `script.js` contiene la lógica de:
 
 ## 📄 Licencia
 
-Proyecto educativo y experimental basado en:
+Este proyecto está disponible bajo la **licencia MIT**. Eres libre de:
 
-- MediaPipe
-- TensorFlow.js
-- Google Teachable Machine
+- ✅ Descargar y usar el proyecto
+- ✅ Modificar y adaptar el código
+- ✅ Distribuir copias
+- ✅ Usar con fines comerciales o educativos
+
+**Condiciones:**
+- Incluye la licencia MIT en cualquier distribución
+- Sin garantía (se proporciona "tal cual")
+
+```
+MIT License - https://opensource.org/licenses/MIT
+```
 
 ---
 
-## 👨‍💻 Autor
-<<<<<<< HEAD
+## 👨‍💻 Autores
 
-Keiner Fontalvo
-Joseph De la Rans
-Nelson Sierra
-=======
-Keiner Fontalvo,
-Joseph De la Rans,
-Nelson Sierra,
->>>>>>> 5363e77d77364d1f41c2ead5dbeff7566196fa81
-Oscar Llanos
+- **Keiner Fontalvo**
+- **Joseph De la Rans**
+- **Nelson Sierra**
+- **Oscar Llanos**

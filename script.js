@@ -343,7 +343,10 @@ analyzeBtn.addEventListener("click", async () => {
   if (!modelsLoaded || !imageData) return;
 
   resultsSection.classList.remove("hidden");
-  if (thumbImg) thumbImg.src = imageData;
+  if (thumbImg) {
+    thumbImg.src = imageData;
+    document.getElementById("thumbWrap").classList.remove("hidden");
+  }
   if (resultLoading) resultLoading.classList.remove("hidden");
 
   resultCard.innerHTML = `
@@ -411,6 +414,7 @@ removeBtn.addEventListener("click", () => {
   analyzeBtn.disabled = true;
   resultsSection.classList.add("hidden");
   resultCard.innerHTML = "";
+  document.getElementById("thumbWrap").classList.add("hidden");
   fileInput.value = "";
 });
 
@@ -550,6 +554,7 @@ captureBtn.addEventListener("click", () => {
   const uploadInner = uploadZone.querySelector(".upload-inner");
   if (uploadInner) uploadInner.classList.add("hidden");
   analyzeBtn.disabled = !modelsLoaded;
+  document.getElementById("thumbWrap").classList.add("hidden");
   stopCamera();
   cameraMode = null;
   cameraModal.classList.add("hidden");
