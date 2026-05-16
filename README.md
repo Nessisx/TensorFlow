@@ -233,8 +233,14 @@ Proyecto educativo y experimental basado en:
 ---
 
 ## 👨‍💻 Autor
+<<<<<<< HEAD
 
 Keiner Fontalvo
 Joseph De la Rans
 Nelson Sierra
+=======
+Keiner Fontalvo,
+Joseph De la Rans,
+Nelson Sierra,
+>>>>>>> 5363e77d77364d1f41c2ead5dbeff7566196fa81
 Oscar Llanos
