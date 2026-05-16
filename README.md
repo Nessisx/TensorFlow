@@ -210,8 +210,8 @@ Proyecto educativo y experimental basado en:
 ---
 
 ## 👨‍💻 Autor
-Keiner Fontalvo
-Joseph De la Rans
-Nelson Sierra
+Keiner Fontalvo,
+Joseph De la Rans,
+Nelson Sierra,
 Oscar Llanos
 
