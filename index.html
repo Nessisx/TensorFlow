@@ -1,117 +1,213 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PoseAI — Analizador de Poses</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PoseAI — Analizador de Poses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">PoseAI</span>
+      </div>
+    </header>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="logo">
-      <span class="logo-icon">◈</span>
-      <span class="logo-text">PoseAI</span>
-    </div>
-  </header>
+    <!-- Hero -->
+    <main class="main">
+      <section class="hero">
+        <h1 class="hero-title">
+          Analiza<br />
+          <em>cualquier<br />pose</em>
+        </h1>
+        <p class="hero-sub">
+          Sube una foto o toma una desde tu cámara y la IA identificará la pose,
+          postura y movimiento corporal al instante.
+        </p>
+      </section>
 
-  <!-- Hero -->
-  <main class="main">
-    <section class="hero">
-      <h1 class="hero-title">
-        Analiza<br/>
-        <em>cualquier<br/>pose</em>
-      </h1>
-      <p class="hero-sub">Sube una foto o toma una desde tu cámara y la IA identificará la pose, postura y movimiento corporal al instante.</p>
-    </section>
+      <!-- Upload Zone -->
+      <section class="upload-section">
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-inner">
+            <div class="upload-icon-wrap">
+              <svg
+                class="upload-icon"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M24 8L24 32M24 8L16 16M24 8L32 16"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8 38H40"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <p class="upload-text">Arrastra tu imagen aquí</p>
+            <p class="upload-hint">o elige una opción</p>
+          </div>
 
-    <!-- Upload Zone -->
-    <section class="upload-section">
-      <div class="upload-zone" id="uploadZone">
-        <div class="upload-inner">
-          <div class="upload-icon-wrap">
-            <svg class="upload-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24 8L24 32M24 8L16 16M24 8L32 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M8 38H40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Preview image (hidden by default) -->
+          <img id="previewImg" class="preview-img hidden" alt="Vista previa" />
+          <!-- Remove button -->
+          <button
+            class="remove-btn hidden"
+            id="removeBtn"
+            title="Eliminar imagen"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Input file (hidden) -->
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+          style="display: none"
+        />
+
+        <!-- Action buttons -->
+        <div class="action-buttons">
+          <button class="btn btn-outline" id="uploadBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M4 16l4-4 4 4 4-8 4 8" />
+              <rect x="2" y="3" width="20" height="18" rx="2" />
             </svg>
+            Subir imagen
+          </button>
+
+          <button class="btn btn-outline" id="liveCameraBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="1" />
+              <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Cámara en vivo
+          </button>
+
+          <button class="btn btn-outline" id="cameraBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"
+              />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            Capturar foto
+          </button>
+
+          <button class="btn btn-primary" id="analyzeBtn" disabled>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+            Analizar pose
+          </button>
+        </div>
+      </section>
+
+      <!-- Camera modal -->
+      <div class="modal hidden" id="cameraModal">
+        <div class="modal-box">
+          <div class="modal-header">
+            <span id="cameraModalTitle">Cámara en vivo</span>
+            <button class="close-modal" id="closeCamera">✕</button>
           </div>
-          <p class="upload-text">Arrastra tu imagen aquí</p>
-          <p class="upload-hint">o elige una opción</p>
+          <div class="video-wrap">
+            <video id="videoEl" autoplay playsinline></video>
+            <div class="video-overlay"></div>
+          </div>
+          <button class="btn btn-primary full-width" id="captureBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+            Capturar foto
+          </button>
+          <canvas id="snapCanvas" hidden></canvas>
+        </div>
+      </div>
+
+      <!-- Results section -->
+      <section class="results-section hidden" id="resultsSection">
+        <div class="results-header">
+          <span class="results-tag">ANÁLISIS</span>
+          <h2 class="results-title" id="resultsTitle">Resultado de la pose</h2>
+          <button
+            class="close-modal hidden"
+            id="closeLiveCamera"
+            title="Cerrar cámara"
+          >
+            ✕
+          </button>
         </div>
 
-        <!-- Preview image (hidden by default) -->
-        <img id="previewImg" class="preview-img hidden" alt="Vista previa" />
-        <!-- Remove button -->
-        <button class="remove-btn hidden" id="removeBtn" title="Eliminar imagen">✕</button>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="action-buttons">
-        <label class="btn btn-outline" for="fileInput">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4-4 4 4 4-8 4 8"/><rect x="2" y="3" width="20" height="18" rx="2"/></svg>
-          Subir imagen
-          <input type="file" id="fileInput" accept="image/*" hidden />
-        </label>
-
-        <button class="btn btn-outline" id="cameraBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Tomar foto
-        </button>
-
-        <button class="btn btn-primary" id="analyzeBtn" disabled>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          Analizar pose
-        </button>
-      </div>
-    </section>
-
-    <!-- Camera modal -->
-    <div class="modal hidden" id="cameraModal">
-      <div class="modal-box">
-        <div class="modal-header">
-          <span>Cámara en vivo</span>
-          <button class="close-modal" id="closeCamera">✕</button>
-        </div>
-        <div class="video-wrap">
-          <video id="videoEl" autoplay playsinline></video>
-          <div class="video-overlay"></div>
-        </div>
-        <button class="btn btn-primary full-width" id="captureBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="10"/></svg>
-          Capturar foto
-        </button>
-        <canvas id="snapCanvas" hidden></canvas>
-      </div>
-    </div>
-
-    <!-- Results section -->
-    <section class="results-section hidden" id="resultsSection">
-      <div class="results-header">
-        <span class="results-tag">ANÁLISIS</span>
-        <h2 class="results-title">Resultado de la pose</h2>
-      </div>
-
-      <div class="results-grid">
-        <div class="result-card" id="resultCard">
-          <div class="result-loading hidden" id="resultLoading">
-            <div class="spinner"></div>
-            <p>Procesando imagen…</p>
+        <!-- Contenedor para cámara en vivo (solo se muestra en modo live) -->
+        <div class="live-camera-container hidden" id="liveCameraContainer">
+          <div class="live-video-wrap">
+            <video id="liveVideoEl" autoplay playsinline></video>
+            <div class="video-overlay"></div>
           </div>
         </div>
 
-        <div class="thumb-wrap" id="thumbWrap">
-          <img id="thumbImg" class="thumb-img" alt="Imagen analizada" />
+        <div class="results-grid">
+          <div class="result-card" id="resultCard">
+            <div class="result-loading hidden" id="resultLoading">
+              <div class="spinner"></div>
+              <p>Procesando imagen…</p>
+            </div>
+          </div>
+
+          <div class="thumb-wrap" id="thumbWrap">
+            <img id="thumbImg" class="thumb-img" alt="Imagen analizada" />
+          </div>
         </div>
-      </div>
 
-      <button class="btn btn-ghost" id="resetBtn">← Nueva imagen</button>
-    </section>
-  </main>
+        <button class="btn btn-ghost" id="resetBtn">← Nueva imagen</button>
+      </section>
+    </main>
 
-  <!-- Sin MediaPipe. Solo TF.js y TM Pose (cargados dinámicamente por script.js) -->
-  <script src="script.js"></script>
-</body>
+    <!-- Sin MediaPipe. Solo TF.js y TM Pose (cargados dinámicamente por script.js) -->
+    <script src="script.js"></script>
+  </body>
 </html>

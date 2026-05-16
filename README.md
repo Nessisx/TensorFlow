@@ -1,18 +1,18 @@
-# PoseAI — Analizador de Poses y Gestos
+# PoseAI — Analizador de Poses y Gestos en Tiempo Real
 
-Aplicación web para detección de poses y reconocimiento de gestos utilizando **MediaPipe Hands** y modelos personalizados exportados desde **Teachable Machine**.
+Aplicación web para detección de poses y reconocimiento de gestos en **tiempo real** utilizando **MediaPipe Hands** y modelos personalizados exportados desde **Teachable Machine**.
 
 ---
 
 ## 🚀 Características
 
 - 📷 Subida de imágenes desde el dispositivo
-- 📸 Captura de fotos desde cámara
+- 📹 **Análisis en tiempo real** desde cámara web
 - ✋ Detección de manos con MediaPipe
-- 🪨📄✂️ Clasificación de gestos (*Piedra / Papel / Tijera*)
-- 🧠 Integración con modelos de Teachable Machine
+- 🪨📄✂️ Clasificación de gestos (_Piedra / Papel / Tijera_)
+- 🧠 Integración con modelos de Teachable Machine (fallback)
 - 📊 Visualización de probabilidades por clase
-- ⚡ Procesamiento completamente en el navegador
+- ⚡ Procesamiento completamente en el navegador (GPU acelerado)
 
 ---
 
@@ -71,51 +71,74 @@ http://localhost:8000
 
 ## 🧠 Flujo de uso
 
+### Opción 1: Análisis en tiempo real (cámara)
+
 1. Abre la aplicación en el navegador.
 2. Espera a que los modelos carguen automáticamente.
-3. Sube una imagen o toma una foto.
-4. Haz clic en **"Analizar pose"**.
+3. Haz clic en **"Tomar foto"** para abrir la cámara.
+4. La aplicación comenzará a analizar **automáticamente en tiempo real** cada 500ms.
+5. Mueve tu mano para ver los cambios en las predicciones al instante.
+6. (Opcional) Haz clic en **"Capturar"** para congelar la imagen y cerrar la cámara.
+
+### Opción 2: Análisis de imágenes estáticas
+
+1. Abre la aplicación en el navegador.
+2. Espera a que los modelos carguen automáticamente.
+3. Sube una imagen o toma una foto (captura única).
+4. Haz clic en **"Analizar pose"** para procesar la imagen.
 5. Observa los resultados de detección y clasificación.
 
 ---
 
 ## 🔍 Resultados mostrados
 
-### ✋ MediaPipe Hands
+### ✋ Detección con MediaPipe Hands
 
-La aplicación detecta:
+La aplicación detecta automáticamente:
 
-- Palma de la mano
-- Dedos y articulaciones
-- Puntos clave (*landmarks*)
+- Localización de la palma y dedos
+- Puntos clave (_landmarks_) en 3D
+- Clasificación geométrica: Piedra, Papel o Tijera
+- Nivel de confianza para cada gesto
 
-### 🪨📄✂️ Clasificación de gestos
+### 🪨📄✂️ Gestos reconocidos
 
-Reconoce:
+El sistema clasifica tres gestos principales:
 
-- Piedra
-- Papel
-- Tijera
+- **Piedra**: Puño cerrado (confianza: ~97%)
+- **Papel**: Mano abierta con dedos extendidos (confianza: ~97%)
+- **Tijera**: Dedo índice y medio extendidos (confianza: ~95%)
 
-### 🧠 Teachable Machine
+### 🧠 Fallback: Teachable Machine
 
-Si existe la carpeta `my_model/`, también mostrará:
+Si MediaPipe no detecta mano, el sistema intenta usar Teachable Machine como respaldo:
 
-- Clases detectadas
+- Modelos personalizados entrenados
+- Clases detectadas según configuración del modelo
 - Probabilidades por clase
 - Predicción más probable
 
 ---
 
+## ⚡ Análisis en Tiempo Real
+
+Cuando usas la cámara web:
+
+- **Detección continua**: Se analiza cada frame automáticamente
+- **Velocidad**: ~2 análisis por segundo (500ms)
+- **GPU acelerado**: MediaPipe utiliza GPU cuando está disponible
+- **Sin botón de análisis**: Los resultados se actualizan en vivo
+- **Bajo latency**: Ideal para interacción en tiempo real
+
 ## 🛠️ Dependencias utilizadas
 
 El proyecto utiliza:
 
-- `@mediapipe/tasks-vision`
-- `TensorFlow.js`
-- `teachablemachine-pose`
+- `@mediapipe/tasks-vision@0.10.3` - Detección de manos
+- `TensorFlow.js` - Framework ML
+- `teachablemachine-pose@0.8` - Modelos personalizados
 
-Cargadas mediante CDN.
+Cargadas mediante CDN (no requiere instalación).
 
 ---
 
@@ -210,8 +233,8 @@ Proyecto educativo y experimental basado en:
 ---
 
 ## 👨‍💻 Autor
+
 Keiner Fontalvo
 Joseph De la Rans
 Nelson Sierra
 Oscar Llanos
-

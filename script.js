@@ -27,24 +27,32 @@ let tmMaxPredictions = 0;
 let modelsLoaded = false;
 let imageData = null;
 let webcamStream = null;
-
+let realtimeAnalysisRunning = false;
+let cameraMode = null; // "live" o "capture"
 const tmCanvas = document.createElement("canvas");
 tmCanvas.style.display = "none";
 document.body.appendChild(tmCanvas);
 
 // ── DOM ───────────────────────────────────────────────────────
 const videoEl = document.getElementById("videoEl");
+const liveVideoEl = document.getElementById("liveVideoEl");
 const snapCanvas = document.getElementById("snapCanvas");
 const previewImg = document.getElementById("previewImg");
 const uploadZone = document.getElementById("uploadZone");
 const analyzeBtn = document.getElementById("analyzeBtn");
 const removeBtn = document.getElementById("removeBtn");
 const fileInput = document.getElementById("fileInput");
+const uploadBtn = document.getElementById("uploadBtn");
+const liveCameraBtn = document.getElementById("liveCameraBtn");
 const cameraBtn = document.getElementById("cameraBtn");
 const cameraModal = document.getElementById("cameraModal");
+const cameraModalTitle = document.getElementById("cameraModalTitle");
 const closeCamera = document.getElementById("closeCamera");
+const closeLiveCamera = document.getElementById("closeLiveCamera");
 const captureBtn = document.getElementById("captureBtn");
 const resultsSection = document.getElementById("resultsSection");
+const resultsTitle = document.getElementById("resultsTitle");
+const liveCameraContainer = document.getElementById("liveCameraContainer");
 const resultCard = document.getElementById("resultCard");
 const resultLoading = document.getElementById("resultLoading");
 const thumbImg = document.getElementById("thumbImg");
@@ -366,7 +374,8 @@ function handleImageFile(file) {
     previewImg.src = imageData;
     previewImg.classList.remove("hidden");
     removeBtn.classList.remove("hidden");
-    uploadZone.querySelector(".upload-inner")?.classList.add("hidden");
+    const uploadInner = uploadZone.querySelector(".upload-inner");
+    if (uploadInner) uploadInner.classList.add("hidden");
     analyzeBtn.disabled = !modelsLoaded;
   };
   reader.readAsDataURL(file);
@@ -388,12 +397,17 @@ fileInput.addEventListener("change", (e) => {
   if (e.target.files[0]) handleImageFile(e.target.files[0]);
 });
 
+uploadBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
 removeBtn.addEventListener("click", () => {
   imageData = null;
   previewImg.src = "";
   previewImg.classList.add("hidden");
   removeBtn.classList.add("hidden");
-  uploadZone.querySelector(".upload-inner")?.classList.remove("hidden");
+  const uploadInner = uploadZone.querySelector(".upload-inner");
+  if (uploadInner) uploadInner.classList.remove("hidden");
   analyzeBtn.disabled = true;
   resultsSection.classList.add("hidden");
   resultCard.innerHTML = "";
@@ -402,9 +416,23 @@ removeBtn.addEventListener("click", () => {
 
 if (resetBtn) resetBtn.addEventListener("click", () => removeBtn.click());
 
-// ── Cámara ────────────────────────────────────────────────────
-cameraBtn.addEventListener("click", async () => {
-  cameraModal.classList.remove("hidden");
+// ── Función auxiliar para abrir cámara ────────────────────────
+async function openCamera(mode) {
+  cameraMode = mode; // "live" o "capture"
+
+  if (mode === "live") {
+    // Modo cámara en vivo: mostrar integrado en la sección de resultados
+    resultsSection.classList.remove("hidden");
+    liveCameraContainer.classList.remove("hidden");
+    if (resultsTitle) resultsTitle.textContent = "Cámara en vivo";
+    if (closeLiveCamera) closeLiveCamera.classList.remove("hidden");
+  } else {
+    // Modo captura: mostrar en modal
+    cameraModal.classList.remove("hidden");
+    if (cameraModalTitle) cameraModalTitle.textContent = "Capturar foto";
+    if (captureBtn) captureBtn.style.display = "flex";
+  }
+
   try {
     webcamStream = await navigator.mediaDevices.getUserMedia({
       video: {
@@ -413,29 +441,105 @@ cameraBtn.addEventListener("click", async () => {
         height: { ideal: 720 },
       },
     });
-    videoEl.srcObject = webcamStream;
+
+    const videoElement = mode === "live" ? liveVideoEl : videoEl;
+    videoElement.srcObject = webcamStream;
+
+    // Esperar a que el video esté listo y comenzar análisis en tiempo real
+    videoElement.oncanplay = () => {
+      startRealtimeAnalysis();
+    };
   } catch {
     try {
       webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoEl.srcObject = webcamStream;
+      const videoElement = mode === "live" ? liveVideoEl : videoEl;
+      videoElement.srcObject = webcamStream;
+
+      videoElement.oncanplay = () => {
+        startRealtimeAnalysis();
+      };
     } catch {
       alert("No se pudo acceder a la cámara.");
-      cameraModal.classList.add("hidden");
+      cameraMode = null;
+      if (mode === "live") {
+        liveCameraContainer.classList.add("hidden");
+        resultsSection.classList.add("hidden");
+      } else {
+        cameraModal.classList.add("hidden");
+      }
     }
   }
+}
+
+// ── Botón: Cámara en vivo (análisis continuo) ──────────────────
+liveCameraBtn.addEventListener("click", async () => {
+  openCamera("live");
+});
+
+// ── Botón: Capturar foto ──────────────────────────────────────
+cameraBtn.addEventListener("click", async () => {
+  openCamera("capture");
 });
 
 function stopCamera() {
+  realtimeAnalysisRunning = false;
   if (webcamStream) {
     webcamStream.getTracks().forEach((t) => t.stop());
     webcamStream = null;
   }
 }
+
+// ── Análisis en tiempo real (cámara) ──────────────────────────
+async function startRealtimeAnalysis() {
+  realtimeAnalysisRunning = true;
+  const videoElement = cameraMode === "live" ? liveVideoEl : videoEl;
+
+  while (
+    realtimeAnalysisRunning &&
+    videoElement.readyState === videoElement.HAVE_ENOUGH_DATA
+  ) {
+    try {
+      snapCanvas.width = videoElement.videoWidth;
+      snapCanvas.height = videoElement.videoHeight;
+      snapCanvas.getContext("2d").drawImage(videoElement, 0, 0);
+
+      const result = await analyzeImage(snapCanvas.toDataURL("image/jpeg"));
+
+      if (resultsSection.classList.contains("hidden")) {
+        resultsSection.classList.remove("hidden");
+      }
+      if (resultLoading && resultLoading.classList.contains("hidden")) {
+        resultLoading.classList.add("hidden");
+      }
+
+      displayResults(result);
+    } catch (err) {
+      // Silenciar errores de análisis en tiempo real para no saturar
+    }
+
+    // Analizar cada 500ms para no sobrecargar
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+}
 closeCamera.addEventListener("click", () => {
   stopCamera();
+  cameraMode = null;
   cameraModal.classList.add("hidden");
 });
+
+closeLiveCamera.addEventListener("click", () => {
+  stopCamera();
+  cameraMode = null;
+  liveCameraContainer.classList.add("hidden");
+  resultsSection.classList.add("hidden");
+  if (resultsTitle) resultsTitle.textContent = "Resultado de la pose";
+  if (closeLiveCamera) closeLiveCamera.classList.add("hidden");
+  resultCard.innerHTML = "";
+});
+
 captureBtn.addEventListener("click", () => {
+  if (cameraMode !== "capture") return; // Solo funciona en modo captura
+
   snapCanvas.width = videoEl.videoWidth;
   snapCanvas.height = videoEl.videoHeight;
   snapCanvas.getContext("2d").drawImage(videoEl, 0, 0);
@@ -443,9 +547,11 @@ captureBtn.addEventListener("click", () => {
   previewImg.src = imageData;
   previewImg.classList.remove("hidden");
   removeBtn.classList.remove("hidden");
-  uploadZone.querySelector(".upload-inner")?.classList.add("hidden");
+  const uploadInner = uploadZone.querySelector(".upload-inner");
+  if (uploadInner) uploadInner.classList.add("hidden");
   analyzeBtn.disabled = !modelsLoaded;
   stopCamera();
+  cameraMode = null;
   cameraModal.classList.add("hidden");
 });
 
